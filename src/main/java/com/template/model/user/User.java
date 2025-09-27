@@ -14,6 +14,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class User {
 
+    //TODO: Add more fields as needed
+
     @Id
     private Long id;
 

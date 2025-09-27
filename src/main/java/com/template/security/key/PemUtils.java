@@ -18,6 +18,12 @@ public class PemUtils {
         this.jwtKeyProperties = jwtKeyProperties;
     }
 
+    /**
+     * Loads an RSA PrivateKey from a PEM formatted string.
+     *
+     * @return the PrivateKey
+     * @throws Exception if there is an error during key loading
+     */
     public PrivateKey loadPrivateKey() throws Exception {
         String cleaned = jwtKeyProperties.getPrivateKey()
                 .replace("-----BEGIN PRIVATE KEY-----", "")
@@ -29,6 +35,12 @@ public class PemUtils {
         return KeyFactory.getInstance("RSA").generatePrivate(spec);
     }
 
+    /**
+     * Loads an RSA PublicKey from a PEM formatted string.
+     *
+     * @return the PublicKey
+     * @throws Exception if there is an error during key loading
+     */
     public PublicKey loadPublicKey() throws Exception {
         String cleaned = jwtKeyProperties.getPublicKey()
                 .replace("-----BEGIN PUBLIC KEY-----", "")

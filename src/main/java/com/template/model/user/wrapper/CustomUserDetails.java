@@ -9,6 +9,8 @@ import java.util.List;
 
 public class CustomUserDetails implements UserDetails {
 
+    //TODO: Add only the fields that you want to expose in the JWT token
+
     private final Long userId;
     private final String username;
     private final String email;

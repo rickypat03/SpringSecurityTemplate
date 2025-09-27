@@ -1,6 +1,6 @@
 package com.template.dto;
 
-import com.template.security.sanitizer.annotation.NoHtml;
+import com.template.security.sanitizer.annotation.NoXSS;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,12 +12,14 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserDTO {
 
-    @NoHtml
+    //TODO: Add other fields as needed
+
+    @NoXSS
     private String username;
 
-    @NoHtml
+    @NoXSS
     private String email;
 
-    @NoHtml
+    @NoXSS
     private String role;
 }

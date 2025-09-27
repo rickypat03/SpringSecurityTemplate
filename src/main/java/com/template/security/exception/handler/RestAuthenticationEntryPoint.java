@@ -13,6 +13,10 @@ import java.io.IOException;
 import java.net.URI;
 import java.time.OffsetDateTime;
 
+/**
+ * Manages 401 Unauthorized errors for REST APIs.
+ * Sends a JSON response with Problem Details format.
+ */
 @Component
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
@@ -22,6 +26,14 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
         this.mapper = mapper;
     }
 
+    /**
+     * Commences an authentication scheme.
+     *
+     * @param request  that resulted in an AuthenticationException
+     * @param response so that the user agent can be advised of the failure
+     * @param ex       that caused the invocation
+     * @throws IOException in case of I/O errors
+     */
     @Override
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,

@@ -1,7 +1,6 @@
 package com.template.security.exception.handler;
 
 
-import com.template.security.exception.custom.InvalidTokenException;
 import com.template.security.exception.custom.JwtAuthenticationException;
 import com.template.security.exception.custom.ResourceAlreadyExistsException;
 import com.template.security.exception.custom.ResourceNotFoundException;
@@ -35,18 +34,7 @@ public class GlobalExceptionHandler {
         return pd;
     }
 
-    /**
-     * Aggiunge il percorso della richiesta al ProblemDetail.
-     * @param pd Il ProblemDetail da modificare.
-     * @param path Il percorso della richiesta.
-     * @return Il ProblemDetail aggiornato con il percorso.
-     */
-    private ProblemDetail withPath(ProblemDetail pd, String path) {
-        pd.setProperty("path", path);
-        return pd;
-    }
-
-    // 400 - Validazione Bean Validationd
+    // 400 - Bean Validation
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleValidationException(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
@@ -59,77 +47,70 @@ public class GlobalExceptionHandler {
         return pd;
     }
 
-    // 403 - Autorizzazione negata
+    // 403 - Authorization denied
     @ExceptionHandler(AuthorizationDeniedException.class)
     public ProblemDetail handleAuthorizationDeniedException(AuthorizationDeniedException ex) {
         log.warn("Authorization denied: {}", ex.getMessage());
         return base(HttpStatus.FORBIDDEN, "Access denied", "You do not have permission to access this resource", "AUTH_403_DENIED");
     }
 
-    // 409 - Conflitto di versione (optimistic locking)
+    // 409 - Version conflict (optimistic locking)
     @ExceptionHandler(ObjectOptimisticLockingFailureException.class)
     public ProblemDetail handleOptimisticLockingFailure(ObjectOptimisticLockingFailureException ex) {
         log.error("Optimistic locking failure: {}", ex.getMessage(), ex);
         return base(HttpStatus.CONFLICT, "Conflict", "The resource was modified by another transaction. Please retry.", "DATA_409_OPTIMISTIC_LOCK");
     }
 
-    // 400 - JSON malformato / payload non leggibile
+    // 400 - Parsing JSON
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ProblemDetail handleParsingException(HttpMessageNotReadableException ex) {
         log.warn("Parsing error: {}", ex.getMessage());
         return base(HttpStatus.BAD_REQUEST, "Malformed JSON request", "Body could not be parsed", "JSON_400");
     }
 
-    // 404 - Risorsa non trovata
+    // 404 - Resource not found
     @ExceptionHandler(ResourceNotFoundException.class)
     public ProblemDetail handleResourceNotFoundException(ResourceNotFoundException ex) {
         log.info("Resource not found: {}", ex.getMessage());
         return base(HttpStatus.NOT_FOUND, "Resource not found", "The requested resource does not exist", "RES_404");
     }
 
-    // 409 - Conflitto (già esiste)
+    // 409 - Conflict
     @ExceptionHandler(ResourceAlreadyExistsException.class)
     public ProblemDetail handleResourceAlreadyExistsException(ResourceAlreadyExistsException ex) {
         log.info("Resource already exists: {}", ex.getMessage());
         return base(HttpStatus.CONFLICT, "Resource already exists", "A resource with the same identifier already exists", "RES_409");
     }
 
-    // 409 - Violazione integrità dati
+    // 409 - Integrity violation (es. FK, unique constraint)
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ProblemDetail onDataIntegrity(DataIntegrityViolationException ex) {
         log.error("Data integrity violation: {}", ex.getMessage());
         return base(HttpStatus.CONFLICT, "Data integrity violation", "A data integrity error occurred", "DATA_409_INTEGRITY");
     }
 
-    // 401 - Credenziali errate
+    // 401 - Wrong credentials
     @ExceptionHandler(BadCredentialsException.class)
     public ProblemDetail handleBadCredentialsException(BadCredentialsException ex) {
         log.info("Bad credentials: {}", ex.getMessage());
         return base(HttpStatus.UNAUTHORIZED, "Invalid username or password", "Unauthorized", "AUTH_401_BAD_CREDENTIALS");
     }
 
-    // 401 - Token invalido
-    @ExceptionHandler(InvalidTokenException.class)
-    public ProblemDetail handleInvalidTokenException(InvalidTokenException ex) {
-        log.info("Invalid token: {}", ex.getMessage());
-        return base(HttpStatus.UNAUTHORIZED, "Invalid token", "Unauthorized", "AUTH_401_INVALID_TOKEN");
-    }
-
-    // 401 - JWT auth error generico
+    // 401 - JWT auth error
     @ExceptionHandler(JwtAuthenticationException.class)
     public ProblemDetail handleJwtAuthenticationException(JwtAuthenticationException ex) {
         log.info("JWT authentication error: {}", ex.getMessage());
         return base(HttpStatus.UNAUTHORIZED, "Unauthorized", "JWT authentication failed", "AUTH_401_JWT");
     }
 
-    // 400 - Argomenti non validi
+    // 400 - Not allowed arguments
     @ExceptionHandler(IllegalArgumentException.class)
     public ProblemDetail handleIllegalArgumentException(IllegalArgumentException ex) {
         log.error("Illegal argument: {}", ex.getMessage(), ex);
         return base(HttpStatus.BAD_REQUEST, "Bad request", ex.getMessage(), "GEN_400_ILLARG");
     }
 
-    // 500 - Stati illegali
+    // 500 - Illegal state
     @ExceptionHandler(IllegalStateException.class)
     public ProblemDetail handleIllegalStateException(IllegalStateException ex) {
         log.error("Illegal state: {}", ex.getMessage(), ex);

@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.time.OffsetDateTime;
 
+/**
+ * Handles AccessDeniedException (HTTP 403) for REST APIs by returning a JSON response with Problem Details format.
+ */
 @Component
 public class RestAccessDeniedHandler implements AccessDeniedHandler {
 
@@ -22,6 +25,14 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
         this.mapper = mapper;
     }
 
+    /**
+     * Handles an access denied failure.
+     *
+     * @param request  that resulted in an AccessDeniedException
+     * @param response so that the user agent can be advised of the failure
+     * @param ex       that caused the invocation
+     * @throws IOException in case of I/O errors
+     */
     @Override
     public void handle(HttpServletRequest request,
                        HttpServletResponse response,
@@ -29,7 +40,7 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
 
         ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, "Forbidden");
         pd.setTitle("Forbidden");
-        pd.setType(URI.create("about:blank")); // o doc URL es: https://api.tuodominio.com/errors/forbidden
+        pd.setType(URI.create("about:blank")); // or doc URL
         pd.setProperty("timestamp", OffsetDateTime.now().toString());
         pd.setProperty("path", request.getRequestURI());
         pd.setProperty("errorCode", "AUTH_403");

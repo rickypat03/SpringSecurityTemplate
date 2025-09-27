@@ -30,11 +30,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) return true; // CORS preflight
 
         String uri = request.getRequestURI();
-        // Whitelist SOLO per endpoint realmente pubblici
+        // TODO: Add other public endpoints if needed
         return uri.equals("/api/auth/login")
                 || uri.equals("/api/auth/register")
                 || uri.startsWith("/actuator/health")
-                || uri.equals("/error");
+                || uri.equals("/error")
+                || uri.startsWith("/docs")
+                || uri.startsWith("/swagger-ui")
+                || uri.equals("/swagger-ui.html");
     }
 
     @Override
@@ -43,12 +46,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain chain)
             throws ServletException, IOException {
 
-        // Se già autenticato, prosegui
+        // If already authenticated, skip
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
             chain.doFilter(request, response);
             return;
         }
 
+        // Get token from header
         String header = request.getHeader("Authorization");
         if (header == null || !header.startsWith("Bearer ")) {
             chain.doFilter(request, response);
@@ -70,9 +74,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String username = claims.get("username", String.class);
             String role = claims.get("role", String.class);
 
-            // Costruisci un CUD leggero dai claim (nessun accesso lazy)
+            // TODO: Add other claims if needed
+            //       remember to change the CustomUserDetails class and the JWT generation logic!
             CustomUserDetails cud = CustomUserDetails.fromClaims(userId, username, role);
 
+            // Setting authentication in context
             UsernamePasswordAuthenticationToken auth =
                     new UsernamePasswordAuthenticationToken(cud, null, cud.getAuthorities());
             auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

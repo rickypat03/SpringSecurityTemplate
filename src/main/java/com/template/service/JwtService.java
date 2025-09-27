@@ -1,10 +1,6 @@
 package com.template.service;
 
-import com.template.security.exception.custom.InvalidTokenException;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +57,7 @@ public class JwtService {
      *
      * @param token the JWT token to validate
      * @return the claims contained in the token
-     * @throws InvalidTokenException if the token is invalid or expired
+     * @throws JwtException if the token is invalid or expired
      */
     public Claims validateToken(String token) {
 
@@ -79,17 +75,17 @@ public class JwtService {
         } catch (ExpiredJwtException e) {
 
             log.error("Token expired on: {}", e.getClaims().getExpiration());
-            throw new InvalidTokenException("Token expired on" + e.getClaims().getExpiration() + ". Login again to get a new token");
+            throw new JwtException("Token expired on" + e.getClaims().getExpiration() + ". Login again to get a new token");
 
         } catch (SignatureException e) {
 
             log.error("Token's signature is not valid");
-            throw new InvalidTokenException("Token's signature is not valid. Login again to get a new token");
+            throw new JwtException("Token's signature is not valid. Login again to get a new token");
 
         } catch (Exception e) {
 
             log.error("Token is not valid");
-            throw new InvalidTokenException("Token is not valid. Login again to get a new token");
+            throw new JwtException("Token is not valid. Login again to get a new token");
         }
     }
 

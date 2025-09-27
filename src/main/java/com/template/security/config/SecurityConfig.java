@@ -41,32 +41,34 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                // API stateless con JWT
+                // === API stateless with JWT ===
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
 
-                // CORS: lascia attivo se usi browser front-end
-                .cors(cors -> {}) // usa il bean CorsFilter definito sotto
+                // === CORS ===
+                .cors(cors -> {}) // Bean corsFilter() defined below
 
-                // Error handling JSON
+                // === Error handling JSON ===
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(restAuthenticationEntryPoint)
                         .accessDeniedHandler(restAccessDeniedHandler))
 
-                // Autorizzazioni
+                // === Authorization ===
+                //TODO: Here you can set public endpoints with .permitAll()
+                //      remember to add them to the JWT filter whitelist too!
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(POST, "/api/auth/login").permitAll()
                         .requestMatchers(POST, "/api/auth/register").permitAll()
-                        .requestMatchers(POST, "/api/auth/register/manager").permitAll()
-                        .requestMatchers(POST, "/api/auth/rotate").permitAll()
+                        .requestMatchers("/actuator/health", "/actuator/health/**").permitAll()
+                        .requestMatchers("/error").permitAll()
                         .requestMatchers("/docs", "/docs/**",
-                                "/swagger-ui.html", "/swagger-ui/**").permitAll()
+                                "/swagger-ui.html", "/swagger-ui/**").permitAll() // Only if using Swagger/OpenAPI
                         .anyRequest().authenticated()
                 )
 
-                // Headers di sicurezza
+                // === Security Headers ===
                 .headers(headers -> headers
                         .contentSecurityPolicy(csp -> csp.policyDirectives(String.join("; ",
                                 "default-src 'self'",
@@ -94,7 +96,7 @@ public class SecurityConfig {
                                         .CrossOriginResourcePolicyHeaderWriter.CrossOriginResourcePolicy.SAME_ORIGIN))
                 );
 
-        // JWT filter
+        // === JWT Filter ===
         http.addFilterBefore(
                 new JwtAuthenticationFilter(jwtService),
                 UsernamePasswordAuthenticationFilter.class
@@ -103,6 +105,8 @@ public class SecurityConfig {
         return http.build();
     }
 
+    // === CORS filter bean ===
+    // TODO: This is a very permissive configuration, adjust it to your needs!
     @Bean
     public CorsFilter corsFilter() {
 
@@ -110,6 +114,7 @@ public class SecurityConfig {
 
         cfg.setAllowCredentials(true);
         cfg.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        cfg.addAllowedOriginPattern("*"); // TODO: Change with your front-end origin or remove if used with a mobile app
         cfg.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept"));
         cfg.setExposedHeaders(List.of("Authorization")); // Per il token JWT
         // Preflight cache

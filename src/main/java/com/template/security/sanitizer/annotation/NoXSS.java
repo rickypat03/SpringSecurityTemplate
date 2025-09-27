@@ -7,13 +7,17 @@ import jakarta.validation.Payload;
 
 import java.lang.annotation.*;
 
+/**
+ * Custom annotation to validate that a string does not contain HTML or JavaScript content.
+ * Can be applied to fields or method parameters.
+ */
 @Documented
 @Constraint(validatedBy = NoHtmlValidator.class)
 @Target({ ElementType.FIELD, ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface NoHtml {
+public @interface NoXSS {
 
-    String message() default "HTML/JS non consentito";
+    String message() default "HTML/JS not allowed";
 
     Class<?>[] groups() default {};
 
