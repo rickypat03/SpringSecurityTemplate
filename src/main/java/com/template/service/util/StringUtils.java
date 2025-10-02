@@ -1,13 +1,13 @@
 package com.template.service.util;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Locale;
 
 @Component
+@RequiredArgsConstructor
 public class StringUtils {
-
-    public StringUtils() {}
 
     /**
      * Normalizes a string by stripping leading and trailing whitespace

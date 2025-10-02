@@ -2,8 +2,8 @@ package com.template.service;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.PrivateKey;
@@ -12,20 +12,11 @@ import java.util.Date;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class JwtService {
 
     private final PrivateKey privateKey;
     private final PublicKey publicKey;
-
-    @Autowired
-    public JwtService(PrivateKey privateKey,
-                      PublicKey publicKey) {
-
-        this.privateKey = privateKey;
-        this.publicKey = publicKey;
-
-        log.info("JWT Service initialized with private and public keys");
-    }
 
     /**
      * Generates a JWT token for the given user details.

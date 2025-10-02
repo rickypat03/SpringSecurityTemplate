@@ -1,5 +1,6 @@
 package com.template.security.key;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.security.KeyFactory;
@@ -10,13 +11,10 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
 @Component
+@RequiredArgsConstructor
 public class PemUtils {
 
     private final JwtKeyProperties jwtKeyProperties;
-
-    public PemUtils(JwtKeyProperties jwtKeyProperties) {
-        this.jwtKeyProperties = jwtKeyProperties;
-    }
 
     /**
      * Loads an RSA PrivateKey from a PEM formatted string.
