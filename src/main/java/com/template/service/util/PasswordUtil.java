@@ -1,21 +1,19 @@
 package com.template.service.util;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
 @Component
+@RequiredArgsConstructor
 public class PasswordUtil {
 
     private static final int MIN_LEN = 8;
     private static final int MAX_LEN = 20;
 
     private final PasswordEncoder passwordEncoder;
-
-    public PasswordUtil(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
 
     //TODO: Configure password policy as you wish
     /**

@@ -1,12 +1,11 @@
 package com.template.service.util;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class EmailUtil {
-
-    public EmailUtil() {
-    }
 
     /**
      * Validates if the given email address is in a valid format.
