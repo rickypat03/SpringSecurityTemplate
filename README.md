@@ -32,7 +32,7 @@ git checkout template/pem-local
 
 ### 3. Open the project
 ```bash
-   cd SpringSecurityTemplate
+cd SpringSecurityTemplate
 ```
 
 - Import it into your favorite IDE (IntelliJ IDEA, Eclipse, VS Code);
@@ -80,6 +80,6 @@ Start adding your own:
 
 - Provide Docker support;
 
-- Add the Authorization Server version;
+- Add the Authorization Server's version;
 
 ---
