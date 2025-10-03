@@ -33,7 +33,7 @@ git checkout main
 
 ### 3. Open the project
 ```bash
-   cd SpringSecurityTemplate
+cd SpringSecurityTemplate
 ```
 
 - Import it into your favorite IDE (IntelliJ IDEA, Eclipse, VS Code);
