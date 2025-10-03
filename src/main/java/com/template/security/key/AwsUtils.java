@@ -12,7 +12,7 @@ import java.util.Base64;
 
 @Component
 @RequiredArgsConstructor
-public class PemUtils {
+public class AwsUtils {
 
     private final JwtKeyProperties jwtKeyProperties;
 

@@ -11,15 +11,15 @@ import java.security.PublicKey;
 @RequiredArgsConstructor
 public class JwtKeyConfig {
 
-    private final PemUtils pemUtils;
+    private final AwsUtils awsUtils;
 
     @Bean
     public PrivateKey jwtPrivateKey() throws Exception {
-        return pemUtils.loadPrivateKey();
+        return awsUtils.loadPrivateKey();
     }
 
     @Bean
     public PublicKey jwtPublicKey() throws Exception {
-        return pemUtils.loadPublicKey();
+        return awsUtils.loadPublicKey();
     }
 }

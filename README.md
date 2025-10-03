@@ -9,8 +9,8 @@ A **Spring Boot starter template** with **Spring Security** pre-configured.
 This project gives you a clean foundation to quickly build **secure web applications**.
 
 👉 In this first version you’ll need:
-1. A **database** (PostgreSQL, MySQL, etc.)
-2. **AWS Parameter Store** (📌 coming soon: version without it)
+- A **database** (PostgreSQL, MySQL, etc.);
+- **AWS Parameter Store**;
 
 ---
 
@@ -23,43 +23,51 @@ git clone https://github.com/rickypat03/SpringSecurityTemplate.git
 
 ---
 
-### 2. Open the project
+### 2. Checkout the branch that you want to use
+
+```bash
+git checkout main
+```
+
+---
+
+### 3. Open the project
 ```bash
    cd SpringSecurityTemplate
 ```
 
-- Import it into your favorite IDE (IntelliJ IDEA, Eclipse, VS Code).
+- Import it into your favorite IDE (IntelliJ IDEA, Eclipse, VS Code);
 
-- Rename the project as you like.
-
----
-
-### 3. Configure
-
-- 🔍 Look for TODO comments in the code – they guide you on how to adapt the template.
-
-- Edit application.properties to match your setup.
-
-- Check and adjust pom.xml if needed.
+- Rename the project as you like;
 
 ---
 
-### 4. Run & Build
+### 4. Configure
+
+1. 🔍 Look for TODO comments in the code – they guide you on how to adapt the template.
+
+2. Edit application.properties to match your setup.
+
+3. Check and adjust pom.xml if needed.
+
+---
+
+### 5. Run & Build
 
 You now have a working Spring Boot + Security application!
 Start adding your own:
 
-- Controllers
+- Controllers;
 
-- Services
+- Services;
 
-- Repositories
+- Repositories;
 
 ---
 
 ### 🤝 Contributing
 
-- Fork the repo, create a branch, and open a pull request.
+- Fork the repo, create a branch, and open a pull request;
 
 - Found a bug? Have an idea? → Open an issue!
 
@@ -69,10 +77,8 @@ Start adding your own:
 
 ### 📌 Next steps
 
-1. Add a version without AWS Parameter Store
-
-2. Add example controllers and endpoints 
-
-3. Provide Docker support
+- Add example controllers and endpoints;
+- Provide Docker support;
+- Add the Authorization Server's version;
 
 ---
