@@ -80,6 +80,6 @@ Start adding your own:
 
 - Provide Docker support;
 
-- Add the Authorization Server version;
+- Add the Authorization Server's version;
 
 ---
